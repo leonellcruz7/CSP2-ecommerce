@@ -36,6 +36,8 @@ module.exports = {
     },
 
     deleteUser: (req, res) => {
+        const data = {isAdmin: auth.decode(req.headers.authorization).isAdmin}
+        if(data.isAdmin){
         User.findOne({email: req.body.email}).then(result => {
             if(result == null){
                 res.send(`User does not exist`)
@@ -51,6 +53,10 @@ module.exports = {
                 }
             }
         })
+        }
+        else{
+            res.send(`Admin Required`)
+        }
     },
     
     login: (req,res) => {
@@ -71,8 +77,10 @@ module.exports = {
     },
 
     changePassword: (req,res) => {
-        User.findOne({email: req.body.email}).then(result => {
-            if(result == null){
+        const userData = auth.decode(req.headers.authorization)
+        
+        User.findOne({email: userData.email}).then(result => {
+            if(result.email !== req.body.email){
                 res.send(`Incorrect Email`)
             }
             else{
@@ -102,9 +110,9 @@ module.exports = {
     setToAdmin: (req,res) => {
         User.findOneAndUpdate({email: req.body.email}, {$set: {
             isAdmin: req.body.isAdmin
-        }}).then((success, error) => {
-            if(error){
-                res.send(`Status Change Failed`)
+        }}).then(result => {
+            if(result == null){
+                res.send(`User does not exist`)
             }
             else{
                 res.send(`Status Change Success`)

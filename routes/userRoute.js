@@ -7,11 +7,11 @@ router.post(`/register`, userController.registerUser)
 
 router.get(`/`, userController.getAll)
 
-router.delete(`/delete/`, userController.deleteUser)
+router.delete(`/delete/`, auth.verify, userController.deleteUser)
 
 router.get(`/login`, userController.login)
 
-router.put(`/change-password/`, userController.changePassword)
+router.put(`/change-password/`, auth.verify, userController.changePassword)
 
 router.put(`/set-to-admin1107`, userController.setToAdmin)
 
