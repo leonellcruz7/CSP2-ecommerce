@@ -7,13 +7,13 @@ const orderSchema = mongoose.Schema({
     },
     purchasedOn: {
         type: Date,
-        required: new Date()
+        default: new Date()
     },
     isAdmin: {
         type: Boolean,
         default: false
     },
-    details: [
+    details: 
         {
             userId: {
                 type: String,
@@ -24,7 +24,7 @@ const orderSchema = mongoose.Schema({
                 required: true
             }
         }
-    ]
+    
 })
 
 module.exports = mongoose.model(`Orders`, orderSchema)
