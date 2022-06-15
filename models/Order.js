@@ -1,20 +1,29 @@
 const mongoose = require(`mongoose`)
 
 const orderSchema = mongoose.Schema({
+    userAccount: {
+        type: String,
+        required: true
+},
+    productName: {
+        type: String,
+        required: true
+    },
+
     totalAmount: {
         type: Number,
         required: true
     },
+    
     purchasedOn: {
         type: Date,
         default: new Date()
     },
-    isAdmin: {
-        type: Boolean,
-        default: false
-    },
+
     details: 
         {
+            
+
             userId: {
                 type: String,
                 required: true

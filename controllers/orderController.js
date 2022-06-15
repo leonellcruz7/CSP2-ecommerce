@@ -11,8 +11,11 @@ module.exports = {
         const itemOrdered = Product.findById(req.body.productId).then(result => {
 
             const newOrder = new Order({
+                userAccount: userData.email,
+                productName: result.name,
                 totalAmount: result.price * req.body.amount,
                 details: {
+                    
                     userId: userData.id,
                     productId: req.body.productId
                 }
@@ -49,6 +52,18 @@ module.exports = {
         })
     },
 
+    getMyOrders: async (req,res) => {
+        const userData = auth.decode(req.headers.authorization)
+
+        Order.find({userAccount: userData.email}).then(result => {
+            res.send(result)
+        })
+        
+
+        
+
+    },
+
     removeOrder: (req,res) => {
         const userData = auth.decode(req.headers.authorization)
 
@@ -62,9 +77,6 @@ module.exports = {
             }
         })
     }
-
-    
-
 
     
 }
