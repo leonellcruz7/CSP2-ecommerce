@@ -38,8 +38,8 @@ module.exports = {
         })
     },
 
-    searchProduct: (req,res) => {
-        Product.find({name: req.body.name}).then(result => {
+    searchName: (req,res) => {
+        Product.find({name: req.params.id}).then(result => {
             if(result.length == 0){
                 res.send(`Product does not exist`)
             }
