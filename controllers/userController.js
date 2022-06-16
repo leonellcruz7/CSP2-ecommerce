@@ -33,7 +33,7 @@ module.exports = {
             }
 
             else{
-               res.send(`Email is already taken`)
+               res.send(`${req.body.email} is already taken`)
             }
         })
         

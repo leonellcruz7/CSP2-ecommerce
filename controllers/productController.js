@@ -8,7 +8,7 @@ module.exports = {
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
-            availableItems: req.body.availableItems
+            availableStock: req.body.availableStock
         })
 
             newProduct.save()
@@ -35,16 +35,16 @@ module.exports = {
         })
     },
 
-    deleteProduct: (req,res) => {
-        Product.findById(req.body.id).then(result => {
-            if(result == null){
-                res.send(`Product does not exist`)
-            }
-            else{
+    deleteProduct: async (req,res) => {
+        try{
+        await Product.findById(req.body.id).then(result => {
                 result.deleteOne()
                 res.send(`Product Delisted`)
-            }
         })
+        }
+        catch{
+            res.send(`Product does not exist`)
+        }
     },
 
     updateProduct: async (req,res) => {
@@ -62,7 +62,28 @@ module.exports = {
         catch{
             res.send(`Product not found`)
         }
+    },
+
+    addStock: async (req,res) => {
+        try{
+            Product.findById(req.params.id).then(result => {
+                result.updateOne({$set: {
+                    availableStock: result.availableStock + req.body.amount,
+                    isActive: true
+                }}).then(result => {})
+            })
+
+            Product.findById(req.params.id).then(result => {
+                res.send(`${result.name} has been restocked to ${result.availableStock + req.body.amount}`)
+            })
+        
+        }
+        catch{
+            res.send(`Product not found`)
+        }
     }
+
+
 
 
 }
