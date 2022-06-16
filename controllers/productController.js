@@ -122,16 +122,24 @@ module.exports = {
         }
     },
 
-    archive: (req,res) => {
+    archive: async (req,res) => {
         const userData = auth.decode(req.headers.authorization)
 
         if(userData.isAdmin == true){
-            Product.findByIdAndUpdate({_id: req.params.Id}, {$set: {
-                isActive: false
-            }}).then(result => {
-                res.send(`Product has been archived`)
-            })
+
+            try{
+                await Product.findByIdAndUpdate({_id: req.params.Id}, {$set: {
+                    isActive: false
+                }}).then(result => {
+                    res.send(`Product has been archived`)
+                })
+            }
+            catch{
+                res.send(`Product not found`)
+            }
+                
         }
+
         else{
             res.send(`Admin Required`)
         }
