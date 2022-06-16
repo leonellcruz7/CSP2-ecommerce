@@ -2,14 +2,21 @@ const Order = require(`../models/Order`)
 const User = require(`../models/User`)
 const Product = require(`../models/Product`)
 const auth = require(`../auth`)
+const { findById, findByIdAndUpdate } = require("../models/Order")
 
 module.exports = {
     
-    createOrder:  (req,res) => {
+    createOrder: async (req,res) => {
         const userData = auth.decode(req.headers.authorization)
 
-        const itemOrdered = Product.findById(req.body.productId).then(result => {
+        try{
+        const itemOrdered = await Product.findById(req.body.productId).then(result => {
+            result.updateOne({$set: {
+                availableItems: result.availableItems - req.body.amount
+            }}).then(result => {
 
+            })
+            
             const newOrder = new Order({
                 userAccount: userData.email,
                 productName: result.name,
@@ -20,30 +27,24 @@ module.exports = {
                     productId: req.body.productId
                 }
             })
+            
+            return newOrder.save().then((success, error) => {
+                if(error){
+                    return false;
+                }
+                else{
+                   res.send(`Order Processed`)
+                }
+            })
 
-            newOrder.save()
-            res.send(`Order Placed`)
-
+            
         })
 
-
-
-
-        // const newOrder = new Order({
-        //     totalAmount: 1,
-        //     details: [{
-        //         userId: req.body.userId,
-        //         productId: req.body.productId
-        //     }]
-        // })
-        // newOrder.save()
-        // res.send(`Order Placed`)
-        
-        
-
-    
-        
-        
+        }
+        catch{
+            res.send(`Product not found`)
+        }
+ 
     },
 
     getAll: (req,res) => {
@@ -52,22 +53,20 @@ module.exports = {
         })
     },
 
-    getMyOrders: async (req,res) => {
+    getMyOrders: (req,res) => {
         const userData = auth.decode(req.headers.authorization)
 
         Order.find({userAccount: userData.email}).then(result => {
             res.send(result)
         })
         
-
-        
-
     },
 
-    removeOrder: (req,res) => {
+    removeOrder: async (req,res) => {
         const userData = auth.decode(req.headers.authorization)
 
-        Order.findById(req.body.orderId).then(result => {
+        try{
+            await Order.findById(req.body.orderId).then(result => {
             if(result.details.userId == userData.id){
                 result.deleteOne()
                 res.send(`Order Removed`)
@@ -75,7 +74,12 @@ module.exports = {
             else{
                 res.send('Please log in to your account')
             }
-        })
+            })
+        }
+        catch{
+            res.send(`Order does not exist`)
+        }
+       
     }
 
     

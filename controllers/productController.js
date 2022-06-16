@@ -7,7 +7,8 @@ module.exports = {
         const newProduct = new Product({
             name: req.body.name,
             description: req.body.description,
-            price: req.body.price
+            price: req.body.price,
+            availableItems: req.body.availableItems
         })
 
             newProduct.save()

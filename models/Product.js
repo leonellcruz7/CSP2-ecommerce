@@ -5,14 +5,22 @@ const productSchema = mongoose.Schema({
         type: String,
         required: true
     },
+
     description: {
         type: String,
         required: true
     },
+
     price: {
         type: Number,
         required: true
     },
+
+    availableItems: {
+        type: Number,
+        required: true
+    },
+
     isActive: {
         type: Boolean,
         default: true

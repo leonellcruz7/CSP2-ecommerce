@@ -7,21 +7,31 @@ module.exports = {
 
     registerUser: (req,res) => {
         User.findOne({email: req.body.email}).then(result => {
+
             if(result == null){
+
                 const newUser = new User({
-                email: req.body.email,
-                password: bcrypt.hashSync(req.body.password, 10)
+
+                    email: req.body.email,
+
+                    password: bcrypt.hashSync(req.body.password, 10)
+
                 })
 
                 newUser.save().then((success, error) => {
+
                     if(error){
                         res.send(`failed`)
                     }
-                    else{
+
+                    else{                        
                         res.send(success)
                     }
+
                 })
+
             }
+
             else{
                res.send(`Email is already taken`)
             }
@@ -37,22 +47,27 @@ module.exports = {
 
     deleteUser: (req, res) => {
         const data = {isAdmin: auth.decode(req.headers.authorization).isAdmin}
+
         if(data.isAdmin){
-        User.findOne({email: req.body.email}).then(result => {
-            if(result == null){
-                res.send(`User does not exist`)
-            }
-            else{
-                const passMatch = bcrypt.compareSync(req.body.password, result.password)
-                if(passMatch == true){
-                    result.deleteOne()
-                    res.send(`User deleted`)
+            User.findOne({email: req.body.email}).then(result => {
+
+                if(result == null){
+
+                    res.send(`User does not exist`)
                 }
                 else{
-                    res.send(`Incorrect password`)
+
+                    const passMatch = bcrypt.compareSync(req.body.password, result.password)
+                      
+                        if(passMatch == true){
+                            result.deleteOne()
+                            res.send(`User deleted`)
+                        }
+                        else{
+                            res.send(`Incorrect password`)
+                        }
                 }
-            }
-        })
+            })
         }
         else{
             res.send(`Admin Required`)
@@ -61,17 +76,19 @@ module.exports = {
     
     login: (req,res) => {
         User.findOne({email: req.body.email}).then(result => {
+
             if(result == null){
                 res.send(`Email does not exist`)
             }
+
             else{
                 const passMatch = bcrypt.compareSync(req.body.password, result.password)
-                if(passMatch == true){
-                    res.send({access: auth.createAccessToken(result)})
-                }
-                else{
-                    res.send(`Incorrect Password`)
-                }
+                    if(passMatch == true){
+                        res.send({access: auth.createAccessToken(result)})
+                    }
+                    else{
+                        res.send(`Incorrect Password`)
+                    }
             }
         })
     },
@@ -109,11 +126,15 @@ module.exports = {
 
     setToAdmin: (req,res) => {
         User.findOneAndUpdate({email: req.body.email}, {$set: {
+
             isAdmin: req.body.isAdmin
+
         }}).then(result => {
+
             if(result == null){
                 res.send(`User does not exist`)
             }
+
             else{
                 res.send(`Status Change Success`)
             }
@@ -125,12 +146,14 @@ module.exports = {
 
         if(data.isAdmin){
             User.findOne({email: req.body.email}).then(result => {
+
                 if(result == null){
                     res.send(`User does not exist`)
                 }
                 else{
                     res.send(result)
                 }
+                
             })
         }
         else{
