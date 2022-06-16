@@ -18,4 +18,4 @@ mongoose.connect(`mongodb+srv://admin:admin@wdc028-course-booking.mgfy3.mongodb.
     useUnifiedTopology: true
 }, () => console.log(`Connected to MongoDB`))
 
-app.listen(port, () => console.log(`Now running localhost: ${port}`))
+app.listen(process.env.PORT || port, () => {console.log(`API now online on port ${process.env.PORT || port}`)})
