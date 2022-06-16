@@ -6,6 +6,8 @@ const port = 4000
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+const home = require(`./routes/homeRoute`)
+app.use(`/`, home)
 const userRoute = require(`./routes/userRoute`)
 app.use(`/users`, userRoute)
 const productRoute = require(`./routes/productRoute`)
