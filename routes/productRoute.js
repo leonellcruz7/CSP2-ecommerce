@@ -3,22 +3,31 @@ const router = express.Router()
 const productController = require(`../controllers/productController`)
 const auth = require(`../auth`)
 
-router.post(`/enlist`, productController.productEnlist)
+router.post(`/enlist`, auth.verify, productController.productEnlist)
 
 
-router.get(`/`, productController.getAll)
+router.get(`/all`, productController.getAll)
+
+
+router.get(`/:id`, productController.getId)
 
 
 router.get(`/search`, productController.searchProduct)
 
 
-router.delete(`/delist`, productController.deleteProduct)
+router.get(`/`, productController.getActive)
 
 
-router.put(`/:id`, productController.updateProduct)
+router.delete(`/delist`, auth.verify, productController.deleteProduct)
 
 
-router.put(`/addstock/:id`, productController.addStock)
+router.put(`/:id`, auth.verify, productController.updateProduct)
+
+
+router.put(`/addstock/:id`, auth.verify, productController.addStock)
+
+
+router.put(`/:Id/archive`, auth.verify, productController.archive)
 
 
 
