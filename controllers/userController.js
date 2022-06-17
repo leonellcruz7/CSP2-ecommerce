@@ -6,36 +6,64 @@ const { find } = require("../models/User")
 module.exports = {
 
     registerUser: (req,res) => {
-        User.findOne({email: req.body.email}).then(result => {
+        
+        if(req.body.email !== ''){
+            
+            if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email)){
 
-            if(result == null){
+               User.findOne({email: req.body.email}).then(result => {
 
-                const newUser = new User({
+                        if(result == null){
 
-                    email: req.body.email,
+                            if(req.body.password !== ''){
 
-                    password: bcrypt.hashSync(req.body.password, 10)
+                                const newUser = new User({
 
-                })
+                                    email: req.body.email,
 
-                newUser.save().then((success, error) => {
+                                    password: bcrypt.hashSync(req.body.password, 10)
 
-                    if(error){
-                        res.send(`failed`)
-                    }
+                                })
 
-                    else{                        
-                        res.send(success)
-                    }
+                                newUser.save().then((success, error) => {
 
-                })
+                                    if(error){
+                                        res.send(`failed`)
+                                    }
 
+                                    else{                        
+                                        res.send(success)
+                                    }
+
+                                })
+                            }
+
+                            else{
+                                res.send(`Please input password`)
+                            }
+
+
+                        }
+
+                        else{
+                        res.send(`${req.body.email} is already taken`)
+                        }
+
+                        })
             }
 
             else{
-               res.send(`${req.body.email} is already taken`)
+
+                res.send(`You have entered an invalid email address!`)
             }
-        })
+               
+        }
+        else{
+            res.send(`Please input email`)
+        }
+
+
+        
         
     },
 
