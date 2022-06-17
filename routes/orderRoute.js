@@ -6,13 +6,13 @@ const auth = require(`../auth`)
 
 
 
-router.post(`/create-order`, auth.verify, orderController.createOrder)
+router.post(`/checkout`, auth.verify, orderController.createOrder)
 
 
 router.get(`/`, auth.verify, orderController.getAll)
 
 
-router.get(`/mycart`, auth.verify, orderController.getMyOrders)
+router.get(`/myOrders`, auth.verify, orderController.getMyOrders)
 
 
 router.delete(`/remove-order`, auth.verify, orderController.removeOrder)
