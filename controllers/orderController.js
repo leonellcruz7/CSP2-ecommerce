@@ -80,9 +80,17 @@ module.exports = {
     },
 
     getAll: (req,res) => {
-        Order.find().then(result => {
-            res.send(result)
-        })
+        const userData = auth.decode(req.headers.authorization)
+
+            if(userData.isAdmin){
+                Order.find().then(result => {
+                    res.send(result)
+                })
+            }
+            else{
+                res.send(`Please login an admin account`)
+            }
+       
     },
 
     getMyOrders: (req,res) => {

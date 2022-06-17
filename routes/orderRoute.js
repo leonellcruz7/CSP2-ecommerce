@@ -9,7 +9,7 @@ const auth = require(`../auth`)
 router.post(`/create-order`, auth.verify, orderController.createOrder)
 
 
-router.get(`/`, orderController.getAll)
+router.get(`/`, auth.verify, orderController.getAll)
 
 
 router.get(`/mycart`, auth.verify, orderController.getMyOrders)
