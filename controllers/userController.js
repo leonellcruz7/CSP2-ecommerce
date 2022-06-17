@@ -6,7 +6,16 @@ const { find } = require("../models/User")
 module.exports = {
 
     registerUser: (req,res) => {
-        
+
+        let pw = req.body.password
+
+        // if( !!isNaN(pw)){
+        //     res.send(`yes`)
+        // }
+        // else{
+        //     res.send(`no`)
+        // }
+
         if(req.body.email !== ''){
             
             if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email)){
@@ -15,7 +24,7 @@ module.exports = {
 
                         if(result == null){
 
-                            if(req.body.password !== ''){
+                            if(!!isNaN(pw)){
 
                                 const newUser = new User({
 
@@ -61,10 +70,7 @@ module.exports = {
         else{
             res.send(`Please input email`)
         }
-
-
-        
-        
+       
     },
 
     getAll: (req,res) => {
@@ -73,10 +79,11 @@ module.exports = {
         })
     },
 
-    deleteUser: (req, res) => {
-        const data = {isAdmin: auth.decode(req.headers.authorization).isAdmin}
+    deleteUser: async (req, res) => {
+        
+        const userData = auth.decode(req.headers.authorization)
 
-        if(data.isAdmin){
+        if(userData.isAdmin){
             User.findOne({email: req.body.email}).then(result => {
 
                 if(result == null){
@@ -84,21 +91,32 @@ module.exports = {
                     res.send(`User does not exist`)
                 }
                 else{
-
-                    const passMatch = bcrypt.compareSync(req.body.password, result.password)
-                      
-                        if(passMatch == true){
-                            result.deleteOne()
-                            res.send(`User deleted`)
-                        }
-                        else{
-                            res.send(`Incorrect password`)
-                        }
+                
+                    result.deleteOne()
+                    res.send(`User deleted`)
+          
                 }
             })
         }
         else{
-            res.send(`Admin Required`)
+
+            try{
+
+                await User.findOne({email: req.body.email}).then(result => {
+                    const passMatch = bcrypt.compareSync(req.body.password, result.password)
+                    if(result.email == req.body.email && passMatch){
+                        result.deleteOne()
+                        res.send(`User deleted`)
+                }
+                    else{
+                        res.send(`Please input your correct email and password`)
+                }
+                })
+
+            }
+            catch{
+                res.send(`${req.body.email} does not exist`)
+            }
         }
     },
     
