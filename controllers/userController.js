@@ -159,11 +159,34 @@ module.exports = {
                         res.send(`Please change password`)
                     }
                     else{
-                        result.updateOne({$set: {
-                        password: bcrypt.hashSync(req.body.newPassword, 10)
-                    }}).then(result => {
-                        res.send(`Password Changed`)
-                    })
+                        
+                        if(req.body.newPassword !== ''){
+                            if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*\s).{8,15}$/.test(req.body.newPassword)){
+
+                                result.updateOne({$set: {
+                                password: bcrypt.hashSync(req.body.newPassword, 10)
+                                }}).then(result => {
+                                res.send(`Password Changed`)
+                                })
+
+                            }
+                            else{
+                                res.send(`Password must contain:
+                                    - One uppercase letter
+                                    - One lowercase letter
+                                    - One special character
+                                    - One numeric character
+                                    - 8 to 15 characters`)
+                            }
+                        }
+                        else{
+                            
+                        }
+                        
+
+
+
+                        
                     }
                     
                     
