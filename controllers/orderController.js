@@ -123,7 +123,8 @@ module.exports = {
 
             Product.findById({_id: orderDetails.details.productId}).then(result => {
                 result.updateOne({$set: {
-                    availableStock: result.availableStock + orderDetails.quantity
+                    availableStock: result.availableStock + orderDetails.quantity,
+                    isActive: true
                 }}).then(result => {})
             })
             
