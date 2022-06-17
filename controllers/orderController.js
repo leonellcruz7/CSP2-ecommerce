@@ -10,63 +10,73 @@ module.exports = {
         const userData = auth.decode(req.headers.authorization)
 
         try{
-        await Product.findById(req.body.productId).then(result => {
-            
-            if(result.availableStock !== 0){
-                if(result.availableStock >= req.body.amount){
-                        result.updateOne({$set: {
-                            availableStock: result.availableStock - req.body.amount,        
-                        }}).then(result => {})
+            if(userData.isAdmin == false){
+                try{
+                await Product.findById(req.body.productId).then(result => {
                     
-                    
-
-                    const newOrder = new Order({
-                        userAccount: userData.email,
-                        productName: result.name,
-                        totalAmount: result.price * req.body.amount,
-                        details: {
+                    if(result.availableStock !== 0){
+                        if(result.availableStock >= req.body.amount){
+                                result.updateOne({$set: {
+                                    availableStock: result.availableStock - req.body.amount,        
+                                }}).then(result => {})
                             
-                            userId: userData.id,
-                            productId: req.body.productId
+                            
+
+                            const newOrder = new Order({
+                                userAccount: userData.email,
+                                productName: result.name,
+                                quantity: req.body.amount,
+                                totalBalance: result.price * req.body.amount,
+                                details: {
+                                    
+                                    userId: userData.id,
+                                    productId: req.body.productId
+                                }
+                            })
+                            
+                            return newOrder.save().then((success, error) => {
+                                if(error){
+                                    return false;
+                                }
+                                else{
+                                res.send(`You have ordered ${req.body.amount} piece/s of ${success.productName}`)
+                                }
+                            })
                         }
-                    })
-                    
-                    return newOrder.save().then((success, error) => {
-                        if(error){
-                            return false;
-                        }
+
                         else{
-                        res.send(`You have ordered ${req.body.amount} pieces of ${success.productName}`)
+                            res.send(`Sorry! Stock is not sufficient.`)
                         }
-                    })
-                }
+                    }
+                    else{
+                        res.send(`${result.name} is sold out`)
+                    }
+        
+                })
 
-                else{
-                    res.send(`Sorry! Stock is not sufficient.`)
+                await Product.findById(req.body.productId).then(result => {
+                    if(result.availableStock == 0){
+                        result.updateOne({$set: {
+                            isActive: false
+                        }}).then(result => {})
+                    }
+                    else{
+
+                    }
+                })
+
+                }
+                catch{
+                    res.send(`Product not found`)
                 }
             }
             else{
-                res.send(`${result.name} is sold out`)
+                res.send(`Please use a regular account`)
             }
- 
-        })
-
-        await Product.findById(req.body.productId).then(result => {
-            if(result.availableStock == 0){
-                result.updateOne({$set: {
-                    isActive: false
-                }}).then(result => {})
-            }
-            else{
-
-            }
-        })
-
         }
         catch{
-            res.send(`Product not found`)
+            res.send(`Please use a regular account`)
         }
- 
     },
 
     getAll: (req,res) => {
@@ -88,15 +98,27 @@ module.exports = {
         const userData = auth.decode(req.headers.authorization)
 
         try{
-            await Order.findById(req.body.orderId).then(result => {
+            const orderDetails = await Order.findById(req.body.orderId).then(result => {
+            
             if(result.details.userId == userData.id){
+                
                 result.deleteOne()
                 res.send(`Order Removed`)
+                return result
+                     
             }
+
             else{
                 res.send('Please log in to your account')
             }
             })
+
+            Product.findById({_id: orderDetails.details.productId}).then(result => {
+                result.updateOne({$set: {
+                    availableStock: result.availableStock + orderDetails.quantity
+                }}).then(result => {})
+            })
+            
         }
         catch{
             res.send(`Order does not exist`)

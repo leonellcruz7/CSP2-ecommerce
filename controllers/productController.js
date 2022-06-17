@@ -5,7 +5,7 @@ module.exports = {
 
     productEnlist: (req,res) => {
 
-        const userData = auth.decode(req.headers.authorization)
+    const userData = auth.decode(req.headers.authorization)
     if(userData.isAdmin == true){
         const newProduct = new Product({
             name: req.body.name,
@@ -17,10 +17,10 @@ module.exports = {
             newProduct.save()
             res.send(newProduct)
         
-        }
-        else{
-            res.send(`Admin required`)
-        }
+    }
+    else{
+        res.send(`Admin required`)
+    }
         
 
         
@@ -101,7 +101,7 @@ module.exports = {
 
         if(userData.isAdmin == true){
             try{
-                Product.findById(req.params.id).then(result => {
+                await Product.findById(req.params.id).then(result => {
                     result.updateOne({$set: {
                         availableStock: result.availableStock + req.body.amount,
                         isActive: true
@@ -120,6 +120,7 @@ module.exports = {
         else{
             res.send(`Admin Required`)
         }
+        
     },
 
     archive: async (req,res) => {

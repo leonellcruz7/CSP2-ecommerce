@@ -10,7 +10,12 @@ const orderSchema = mongoose.Schema({
         required: true
     },
 
-    totalAmount: {
+    quantity: {
+        type: Number,
+        required: true
+    },
+
+    totalBalance: {
         type: Number,
         required: true
     },

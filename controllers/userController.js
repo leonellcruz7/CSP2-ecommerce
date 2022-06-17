@@ -9,42 +9,48 @@ module.exports = {
 
         let pw = req.body.password
 
-        // if( !!isNaN(pw)){
-        //     res.send(`yes`)
-        // }
-        // else{
-        //     res.send(`no`)
-        // }
-
         if(req.body.email !== ''){
             
             if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email)){
 
                User.findOne({email: req.body.email}).then(result => {
 
-                        if(result == null){
+                    if(result == null){
 
-                            if(!!isNaN(pw)){
+                            if(pw !== ''){
 
-                                const newUser = new User({
+                                if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*\s).{8,15}$/.test(req.body.password)){
 
-                                    email: req.body.email,
+                                    const newUser = new User({
 
-                                    password: bcrypt.hashSync(req.body.password, 10)
+                                        email: req.body.email,
 
-                                })
+                                        password: bcrypt.hashSync(req.body.password, 10)
 
-                                newUser.save().then((success, error) => {
+                                    })
 
-                                    if(error){
-                                        res.send(`failed`)
-                                    }
+                                    newUser.save().then((success, error) => {
 
-                                    else{                        
-                                        res.send(success)
-                                    }
+                                        if(error){
+                                            res.send(`failed`)
+                                        }
 
-                                })
+                                        else{                        
+                                            res.send(success)
+                                        }
+
+                                    })
+
+                                }
+                                else{
+                                    res.send(`Password must contain:
+                                    - One uppercase letter
+                                    - One lowercase letter
+                                    - One special character
+                                    - One numeric character
+                                    - 8 to 15 characters`)
+                                }
+
                             }
 
                             else{
@@ -54,11 +60,11 @@ module.exports = {
 
                         }
 
-                        else{
-                        res.send(`${req.body.email} is already taken`)
-                        }
+                    else{
+                    res.send(`${req.body.email} is already taken`)
+                    }
 
-                        })
+                    })
             }
 
             else{
@@ -80,7 +86,7 @@ module.exports = {
     },
 
     deleteUser: async (req, res) => {
-        
+
         const userData = auth.decode(req.headers.authorization)
 
         if(userData.isAdmin){
