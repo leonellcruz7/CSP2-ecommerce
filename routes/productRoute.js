@@ -12,7 +12,7 @@ router.get(`/all`, productController.getAll)
 router.get(`/:id`, productController.getId)
 
 
-router.post(`/:id`, productController.searchName)
+router.post(`/category`, productController.searchCategory)
 
 
 router.get(`/`, productController.getActive)

@@ -10,6 +10,7 @@ module.exports = {
         const newProduct = new Product({
             name: req.body.name,
             description: req.body.description,
+            category: req.body.category,
             price: req.body.price,
             availableStock: req.body.availableStock
         })
@@ -38,15 +39,33 @@ module.exports = {
         })
     },
 
-    searchName: (req,res) => {
-        Product.find({name: req.params.id}).then(result => {
-            if(result.length == 0){
-                res.send(`Product does not exist`)
+    searchCategory: async (req,res) => {
+    try{
+        
+        
+            let aa = await Product.find().then(result => {
+                return result
+            })
+            
+            let arr = "";
+            let i = 0;
+
+            do{
+                if(aa[i].category.includes(req.body.category)){
+                arr += aa[i];
+                }
+                else{
+                    
+                }
+                i++;
             }
-            else{
-                res.send(result)
-            }
-        })
+            while (i < aa.length);
+
+            res.send(arr)
+    }
+    catch{
+        res.send(`error`)
+    }
     },
 
     getActive: (req,res) => {

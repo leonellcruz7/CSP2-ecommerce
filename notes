@@ -4,3 +4,29 @@ heroku create app
 2. heroku create
 3. git push heroku master
 4. 
+
+
+focus on searching category
+
+product category
+
+make order product array:
+1. product name
+2. product id
+3. quantity - default 1
+
+change order to cart
+
+create order model for admin users where they can see:
+orders
+income
+
+
+admin
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYWMxZGFmZTY3YzUyMThlZjcwYTJmYiIsImVtYWlsIjoibGVvbmVsbEBnbWFpbC5jb20iLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2NTU0ODEzOTR9.zqsXbZBpse9pk1JQjZBeyj2KM8UvvyFYXy-rsvUPBdM
+
+angelica
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYWMyMDViZTY3YzUyMThlZjcwYTMzMiIsImVtYWlsIjoiYW5nZWxpY2FAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY1NTQ4MTMyOX0.0Kz2nFHOmmtvwhDWFPD-_a-UZtkhZlZ0jrIJlujvL4M
+
+leony
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYWNhM2VhMmI2YTlkYjI1ZWVmZWI1YyIsImVtYWlsIjoibGVvbnlAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY1NTQ4MTQwNH0.M7FuwTwjp1AbKhYfz5pRm9Uom7ga5bMKN5Gq_8xdiFc
