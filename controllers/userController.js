@@ -155,13 +155,14 @@ module.exports = {
             else{
                 const passMatch = bcrypt.compareSync(req.body.oldPassword, result.password)
                 if(passMatch == true){
-                    if(req.body.oldPassword == req.body.newPassword){
-                        res.send(`Please change password`)
+                    if(req.body.oldPassword == req.body.newPassword || req.body.newPassword == ''){
+                        res.send(`Please change your password`)
                     }
                     else{
                         
                         if(req.body.newPassword !== ''){
                             if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*\s).{8,15}$/.test(req.body.newPassword)){
+                            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*\s).{8,15}$/.test(req.body.password)
 
                                 result.updateOne({$set: {
                                 password: bcrypt.hashSync(req.body.newPassword, 10)
