@@ -6,20 +6,10 @@ heroku create app
 4. 
 
 
-focus on searching category
 
-product category
+password 5 attepmts try again in 30 mins
 
-make order product array:
-1. product name
-2. product id
-3. quantity - default 1
 
-change order to cart
-
-create order model for admin users where they can see:
-orders
-income
 
 
 admin
@@ -30,3 +20,9 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYWMyMDViZTY3YzUyMThlZjcwYTMzMiI
 
 leony
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYWNhM2VhMmI2YTlkYjI1ZWVmZWI1YyIsImVtYWlsIjoibGVvbnlAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY1NTQ4MTQwNH0.M7FuwTwjp1AbKhYfz5pRm9Uom7ga5bMKN5Gq_8xdiFc
+
+harold
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYWU2OWM3NGExNTY1YWNlMjRkOGRlYiIsImVtYWlsIjoiaGFyb2xkQGdtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NTU1OTc2MTJ9.EmrxjK6h43YfS8OEemqRpFpCH-2kcWMtFG7hUZ6hZDw
+
+sheena
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYWU2ZGEzODNmZmI1MjZkNGFkYzg4MiIsImVtYWlsIjoic2hlZW5hQGdtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NTU1OTg1NDJ9.-FdxXzVOrBm4kiWKB56tsV1VUV0AYhQ6PCWXdgsw-XI

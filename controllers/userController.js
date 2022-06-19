@@ -46,7 +46,7 @@ module.exports = {
                                     res.send(`Password must contain:
                                     - One uppercase letter
                                     - One lowercase letter
-                                    - One special character
+                                    - No space allowed
                                     - One numeric character
                                     - 8 to 15 characters`)
                                 }
@@ -160,9 +160,9 @@ module.exports = {
                     }
                     else{
                         
-                        if(req.body.newPassword !== ''){
+                        
                             if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*\s).{8,15}$/.test(req.body.newPassword)){
-                            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*\s).{8,15}$/.test(req.body.password)
+                              
 
                                 result.updateOne({$set: {
                                 password: bcrypt.hashSync(req.body.newPassword, 10)
@@ -175,14 +175,11 @@ module.exports = {
                                 res.send(`Password must contain:
                                     - One uppercase letter
                                     - One lowercase letter
-                                    - One special character
+                                    - No space allowed
                                     - One numeric character
                                     - 8 to 15 characters`)
                             }
-                        }
-                        else{
-                            
-                        }
+                        
                         
 
 
