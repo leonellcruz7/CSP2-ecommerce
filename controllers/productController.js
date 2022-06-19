@@ -6,21 +6,44 @@ module.exports = {
     productEnlist: (req,res) => {
 
     const userData = auth.decode(req.headers.authorization)
-    if(userData.isAdmin == true){
-        const newProduct = new Product({
-            name: req.body.name,
-            description: req.body.description,
-            category: req.body.category,
-            price: req.body.price,
-            availableStock: req.body.availableStock
-        })
 
-            newProduct.save()
-            res.send(newProduct)
-        
+    try{
+        // Lowercase category input
+        // Lowercase category input
+            let categories = req.body.category
+            let i = 0;
+            let catArr = ['','','','','','','','','','','','','',''];
+            let slicedArr = catArr.slice(0, categories.length)
+            do{
+                
+                slicedArr[i] += categories[i].toLowerCase();
+                i++;
+            }
+
+            while
+        (categories.length > i);
+        // Lowercase category input
+        // Lowercase category input
+        if(userData.isAdmin == true){
+            const newProduct = new Product({
+                name: req.body.name,
+                description: req.body.description,
+                seller: userData.email,
+                category: slicedArr,
+                price: req.body.price,
+                availableStock: req.body.availableStock
+            })
+
+                newProduct.save()
+                res.send(newProduct)
+            
+        }
+        else{
+            res.send(`Admin required`)
+        }
     }
-    else{
-        res.send(`Admin required`)
+    catch{
+        res.send(`error`)
     }
         
 
@@ -47,11 +70,13 @@ module.exports = {
                 return result
             })
             
-            let arr = "";
+
+            let arr = [];
             let i = 0;
+            let search = req.body.category.toLowerCase()
 
             do{
-                if(aa[i].category.includes(req.body.category)){
+                if(aa[i].category.includes(search)){
                 arr += aa[i];
                 }
                 else{
@@ -67,6 +92,29 @@ module.exports = {
         res.send(`error`)
     }
     },
+
+    // searchCategory: async (req,res) => {
+    // try{
+        
+        
+    //         let aa = await Product.find().then(result => {
+    //             return result
+    //         })
+            
+    //         let quote = [];
+    //         let count = 0
+    //         do{
+    //             quote += `"", `;
+    //             count++ ;
+    //         }
+    //         while(aa.length > count)
+
+    //         res.send(quote)
+    // }
+    // catch{
+    //     res.send(`error`)
+    // }
+    // },
 
     getActive: (req,res) => {
         Product.find({isActive: true}).then(result => {
