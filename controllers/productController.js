@@ -125,6 +125,7 @@ module.exports = {
                 await Product.findByIdAndUpdate({_id: req.params.id}, {$set: {
                     name: req.body.name,
                     description: req.body.description,
+                    category: req.body.category,
                     price: req.body.price
                 }}).then(result => {
                     res.send(`Product Updated`)
