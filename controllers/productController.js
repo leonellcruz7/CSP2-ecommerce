@@ -93,29 +93,6 @@ module.exports = {
     }
     },
 
-    // searchCategory: async (req,res) => {
-    // try{
-        
-        
-    //         let aa = await Product.find().then(result => {
-    //             return result
-    //         })
-            
-    //         let quote = [];
-    //         let count = 0
-    //         do{
-    //             quote += `"", `;
-    //             count++ ;
-    //         }
-    //         while(aa.length > count)
-
-    //         res.send(quote)
-    // }
-    // catch{
-    //     res.send(`error`)
-    // }
-    // },
-
     getActive: (req,res) => {
         Product.find({isActive: true}).then(result => {
             res.send(result)
