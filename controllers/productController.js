@@ -122,10 +122,24 @@ module.exports = {
 
         if(userData.isAdmin == true){
             try{
+
+                let categories = req.body.category
+                let i = 0;
+                let catArr = ['','','','','','','','','','','','','',''];
+                let slicedArr = catArr.slice(0, categories.length)
+            do{
+                
+                slicedArr[i] += categories[i].toLowerCase();
+                i++;
+            }
+
+            while
+        (categories.length > i);
+
                 await Product.findByIdAndUpdate({_id: req.params.id}, {$set: {
                     name: req.body.name,
                     description: req.body.description,
-                    category: req.body.category,
+                    category: slicedArr,
                     price: req.body.price
                 }}).then(result => {
                     res.send(`Product Updated`)
