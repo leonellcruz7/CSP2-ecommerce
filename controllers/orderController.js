@@ -145,17 +145,26 @@ module.exports = {
        
             let user = order.details.userId
             if(order.details.userId == userData.id){
-                
-            let product = await Product.findById(order.details.productId).then(result => {
-                    result.review.push([`${userData.email}: ${req.body.review}`])
-                    result.save().then(result => {})
-                    res.send(`Your review has been submitted`)
-                })
-            
-            }
+                if(req.body.review !== ''){
+                    if(/^.{0,100}$/.test(req.body.review)){   
+                            let product = await Product.findById(order.details.productId).then(result => {
+                                    result.review.push([`${userData.email}: ${req.body.review}`])
+                                    result.save().then(result => {})
+                                    res.send(`Your review has been submitted`)
+                            })
+                        }
+                    else{
+                        res.send(`Maximum of 100 characters only`)
+                    }
+                }
+                else{
+                    res.send(`Please input your review`)
+                }
+                }
             else{
-                res.send(`Please login to your account`)
+                    res.send(`Please login to your account`)
             }
+            
 
             
             // if(order.details.userId == userData._id){
