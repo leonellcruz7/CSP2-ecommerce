@@ -133,7 +133,44 @@ module.exports = {
             res.send(`Order does not exist`)
         }
        
-    }
+    },
 
-    
+    review: async (req,res) => {
+        const userData = auth.decode(req.headers.authorization)
+
+        try{
+            let order = await Order.findById(req.params.id).then(result => {
+                return result
+            })
+       
+            let user = order.details.userId
+            if(order.details.userId == userData.id){
+                
+            let product = await Product.findById(order.details.productId).then(result => {
+                    result.review.push([`${userData.email}: ${req.body.review}`])
+                    result.save().then(result => {})
+                    res.send(`Your review has been submitted`)
+                })
+            
+            }
+            else{
+                res.send(`Please login to your account`)
+            }
+
+            
+            // if(order.details.userId == userData._id){
+            //     let product = Product.findById(order.details.productId).then(result => {
+            //         return result
+            //     })
+            //     }
+            // else{
+            //         res.send(`Please login to your account`)
+            // }
+            // product.review.push(req.body.review)
+            // res.send(`Your review has been posted`)
+        }
+        catch{
+            res.send(`Please login to your account`)
+        }  
+    }
 }

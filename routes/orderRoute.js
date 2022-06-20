@@ -18,5 +18,9 @@ router.get(`/myOrders`, auth.verify, orderController.getMyOrders)
 router.delete(`/remove-order`, auth.verify, orderController.removeOrder)
 
 
+router.put(`/review/:id`, auth.verify, orderController.review)
+
+
 
 module.exports = router;
+

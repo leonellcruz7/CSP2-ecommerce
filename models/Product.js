@@ -35,6 +35,11 @@ const productSchema = mongoose.Schema({
         type: Boolean,
         default: true
     },
+
+    review: {
+        type: Array,
+        default: null
+    },
     createdOn: {
         type: Date,
         default: new Date()
